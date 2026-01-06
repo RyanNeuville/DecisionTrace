@@ -13,7 +13,7 @@ CREATE TABLE decisions (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
     context TEXT, [cite: 20]
-    status TEXT CHECK(status IN ('En cours', 'Validée', 'Annulée')) DEFAULT 'En cours',
+    status TEXT CHECK(status IN ('En cours', 'Validee', 'Annulee')) DEFAULT 'En cours',
     justification TEXT, [cite: 21]
     user_id TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -53,7 +53,7 @@ CREATE TABLE evaluations (
 -- 6. Table des transactions financières
 CREATE TABLE transactions (
     id TEXT PRIMARY KEY,
-    type TEXT CHECK(type IN ('Entrée', 'Sortie')) NOT NULL, [cite: 24, 25]
+    type TEXT CHECK(type IN ('Entree', 'Sortie')) NOT NULL, [cite: 24, 25]
     amount REAL NOT NULL,
     category TEXT NOT NULL, [cite: 25]
     decision_id TEXT, -- Lien optionnel pour la traçabilité stratégique 
