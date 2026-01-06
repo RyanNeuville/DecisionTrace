@@ -2,13 +2,13 @@ import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
 
-const SQL_INIT_FILE = path.join(__dirname, 'init.sql');
-const DB_PATH = path.join(__dirname, 'decisiontrace.db');
+const SQL_INIT_FILE = path.join(__dirname, '../sql/init.sql');
+const DB_PATH = path.join(__dirname, '../database/decisiontrace.db');
 
 const database = new Database(DB_PATH, { verbose: console.log });
 
 /**
- * Initialise la base de données en utilisant ton fichier SQL
+ * Initialise la base de donnees en utilisant le fichier SQL
  */
 const initDb = () => {
     try {
