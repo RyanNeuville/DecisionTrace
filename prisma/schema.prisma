@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider   = "prisma-client"
+  output     = "../src/generated/prisma"
   engineType = "client"
 }
 
@@ -9,43 +9,44 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(cuid())
-  email        String    @unique
+  id           String   @id @default(cuid())
+  email        String   @unique
   name         String?
-  passwordHash String?  
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  passwordHash String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   decisions    Decision[]
   transactions Transaction[]
+  actionLogs   ActionLog[]
 }
 
 model Decision {
   id            String   @id @default(cuid())
   title         String
-  context       String  
-  responsible   String   
+  context       String
+  responsible   String
   status        String   @default("draft") /** draft, in_progress, validated, rejected, archived */
-  justification String?  
+  justification String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  userId        String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  options       Option[]
-  criteria      Criteria[]
+  options  Option[]
+  criteria Criteria[]
 
   @@index([userId])
 }
 
 model Option {
-  id          String @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
   description String?
 
-  decisionId  String
-  decision    Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+  decisionId String
+  decision   Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
 
   evaluations Evaluation[]
 
@@ -66,32 +67,57 @@ model Criteria {
 }
 
 model Evaluation {
-  id         String @id @default(cuid())
-  score      Int    /** note de 1 a 10 */
+  id    String @id @default(cuid())
+  score Int /** note de 1 a 10 */
 
-  optionId   String
-  option     Option   @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  optionId String
+  option   Option @relation(fields: [optionId], references: [id], onDelete: Cascade)
 
   criteriaId String
   criteria   Criteria @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
 
-  @@unique([optionId, criteriaId]) // une seule évaluation par option/critère
+  @@unique([optionId, criteriaId]) /** une seule évaluation par option/critère */
   @@index([optionId])
   @@index([criteriaId])
 }
 
 model Transaction {
   id          String   @id @default(cuid())
-  type        String   /** entry ou exit */
-  amount      Decimal  /** SQLite gère Decimal via string, mais Prisma le convertit bien */
+  type        String /** entry ou exit */
+  amount      Decimal /** SQLite gère Decimal via string, mais Prisma le convertit bien */
   category    String
   description String?
   date        DateTime @default(now())
 
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([date])
   @@index([type])
+}
+
+/**
+ * ActionLog
+ * 
+ * Enregistre les actions importantes de l'utilisateur
+ * 
+ * Chaque action est liée à un utilisateur et peut être liee à une entité spécifique (Decision, Transaction, Option, Criteria)
+ * 
+ * Les actions sont stockées dans un champ description libre pour plus de détails
+ */
+model ActionLog {
+  id          String   @id @default(cuid())
+  actionType  String /** DECISION_CREATED, TRANSACTION_ADDED, DECISION_VALIDATED */
+  entityType  String /** Decision, Transaction, Option, Criteria */
+  entityId    String? /** ID de l'entité concernée (peut être null pour des actions globales) */
+  description String? /** texte libre pour plus de détails (ex: "Décision 'Lancement produit X' validée") */
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([entityType])
+  @@index([actionType])
 }
