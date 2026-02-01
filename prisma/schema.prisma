@@ -1,123 +1,166 @@
 generator client {
-  provider   = "prisma-client"
-  output     = "../src/generated/prisma"
-  engineType = "client"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
+
+/**
+ * --- GESTION UTILISATEURS & SAAS ---
+ */
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String?
-  passwordHash String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  decisions    Decision[]
-  transactions Transaction[]
-  actionLogs   ActionLog[]
+  id             String        @id @default(cuid())
+  clerkId        String        @unique // Pour l'intégration avec Clerk
+  email          String        @unique
+  name           String?
+  image          String?
+  role           UserRole      @default(USER)
+  /**
+   * Relations
+   */
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  decisions      Decision[]
+  transactions   Transaction[]
+  actionLogs     ActionLog[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 }
 
+model Organization {
+  id                 String             @id @default(cuid())
+  name               String
+  slug               String             @unique
+  /**
+   * Gestion de l'abonnement (20 000 FCFA/mois)
+   */
+  subscriptionStatus SubscriptionStatus @default(TRIAL)
+  subscriptionId     String?            @unique
+  users              User[]
+  decisions          Decision[]
+  transactions       Transaction[]
+  createdAt          DateTime           @default(now())
+}
+
+/**
+ * --- MODULE 1 : GESTION DES DÉCISIONS ---
+ */
+
 model Decision {
-  id            String   @id @default(cuid())
-  title         String
-  context       String
-  responsible   String
-  status        String   @default("draft") /** draft, in_progress, validated, rejected, archived */
-  justification String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  options  Option[]
-  criteria Criteria[]
-
-  @@index([userId])
+  id             String         @id @default(cuid())
+  title          String
+  context        String         @db.Text
+  responsible    String
+  status         DecisionStatus @default(DRAFT)
+  justification  String?        @db.Text
+  options        Option[]
+  criteria       Criteria[]
+  predictedCost  Decimal?       @db.Decimal(12, 2)
+  transactions   Transaction[]
+  userId         String
+  user           User           @relation(fields: [userId], references: [id])
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }
 
 model Option {
-  id          String  @id @default(cuid())
+  id          String       @id @default(cuid())
   name        String
-  description String?
-
-  decisionId String
-  decision   Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
-
+  description String?      @db.Text
+  isWinner    Boolean      @default(false)
+  decisionId  String
+  decision    Decision     @relation(fields: [decisionId], references: [id], onDelete: Cascade)
   evaluations Evaluation[]
 
   @@index([decisionId])
 }
 
 model Criteria {
-  id     String @id @default(cuid())
-  name   String
-  weight Int    @default(5) /** ponderation de 1 a 10 */
-
-  decisionId String
-  decision   Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
-
+  id          String       @id @default(cuid())
+  name        String
+  weight      Int          @default(1)
+  decisionId  String
+  decision    Decision     @relation(fields: [decisionId], references: [id], onDelete: Cascade)
   evaluations Evaluation[]
 
   @@index([decisionId])
 }
 
 model Evaluation {
-  id    String @id @default(cuid())
-  score Int /** note de 1 a 10 */
-
-  optionId String
-  option   Option @relation(fields: [optionId], references: [id], onDelete: Cascade)
-
+  id         String   @id @default(cuid())
+  score      Int
+  comment    String?  @db.Text
+  optionId   String
+  option     Option   @relation(fields: [optionId], references: [id], onDelete: Cascade)
   criteriaId String
   criteria   Criteria @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
 
-  @@unique([optionId, criteriaId]) /** une seule évaluation par option/critère */
-  @@index([optionId])
-  @@index([criteriaId])
-}
-
-model Transaction {
-  id          String   @id @default(cuid())
-  type        String /** entry ou exit */
-  amount      Decimal /** SQLite gère Decimal via string, mais Prisma le convertit bien */
-  category    String
-  description String?
-  date        DateTime @default(now())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([date])
-  @@index([type])
+  @@unique([optionId, criteriaId])
 }
 
 /**
- * ActionLog
- * 
- * Enregistre les actions importantes de l'utilisateur
- * 
- * Chaque action est liée à un utilisateur et peut être liee à une entité spécifique (Decision, Transaction, Option, Criteria)
- * 
- * Les actions sont stockées dans un champ description libre pour plus de détails
+ * --- MODULE 2 : GESTION FINANCIÈRE ---
  */
-model ActionLog {
-  id          String   @id @default(cuid())
-  actionType  String /** DECISION_CREATED, TRANSACTION_ADDED, DECISION_VALIDATED */
-  entityType  String /** Decision, Transaction, Option, Criteria */
-  entityId    String? /** ID de l'entité concernée (peut être null pour des actions globales) */
-  description String? /** texte libre pour plus de détails (ex: "Décision 'Lancement produit X' validée") */
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
 
-  @@index([userId])
-  @@index([createdAt])
-  @@index([entityType])
-  @@index([actionType])
+model Transaction {
+  id             String          @id @default(cuid())
+  type           TransactionType
+  amount         Decimal         @db.Decimal(12, 2)
+  category       String
+  description    String?
+  date           DateTime        @default(now())
+  decisionId     String?
+  decision       Decision?       @relation(fields: [decisionId], references: [id])
+  userId         String
+  user           User            @relation(fields: [userId], references: [id])
+  organizationId String
+  organization   Organization    @relation(fields: [organizationId], references: [id])
+
+  @@index([decisionId])
+}
+
+/**
+ * --- LOGS & AUDIT ---
+ */
+
+model ActionLog {
+  id        String   @id @default(cuid())
+  action    String
+  details   Json?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+/**
+ * --- ENUMS ---
+ */
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum DecisionStatus {
+  DRAFT
+  IN_PROGRESS
+  VALIDATED
+  REJECTED
+  ARCHIVED
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  CANCELED
 }
