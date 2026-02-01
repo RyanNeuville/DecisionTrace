@@ -4,17 +4,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/contact-form";
 import {
-  BarChart3,
   CheckCircle2,
   ShieldCheck,
   ArrowRight,
-  Wallet,
   GitBranch,
-  TrendingUp,
   Layout,
-  Users,
   MessageSquare,
-  HelpCircle,
   Menu,
   X,
   CreditCard,
@@ -23,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { ModeToggle } from "@/components/mode-toggle";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -130,6 +126,7 @@ export default function LandingPage() {
             >
               <Link href="/sign-up">Essai Gratuit</Link>
             </Button>
+            <ModeToggle />
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -168,6 +165,9 @@ export default function LandingPage() {
                 <Button size="lg" asChild className="w-full">
                   <Link href="/sign-up">Essai Gratuit</Link>
                 </Button>
+                <div className="flex justify-center">
+                  <ModeToggle />
+                </div>
               </div>
             </div>
           )}
@@ -186,7 +186,9 @@ export default function LandingPage() {
                 className="inline-flex items-center rounded-full border border-secondary/30 bg-secondary/10 px-3 py-1 text-sm font-medium text-secondary-foreground backdrop-blur-sm mx-auto lg:mx-0"
               >
                 <span className="flex h-2 w-2 rounded-full bg-secondary mr-2 animate-pulse"></span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Nouveau pour les PME Camerounaises</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+                  Nouveau pour les PME Camerounaises
+                </span>
               </motion.div>
 
               <motion.h1
@@ -210,8 +212,8 @@ export default function LandingPage() {
                 transition={{ delay: 0.2 }}
                 className="max-w-xl mx-auto lg:mx-0 text-lg md:text-xl text-muted-foreground leading-relaxed"
               >
-                DecisionTrace : L'outil essentiel qui allie stratégie et budget
-                pour les PME et startups au Cameroun.
+                DecisionTrace : L&apos;outil essentiel qui allie stratégie et
+                budget pour les PME et startups au Cameroun.
               </motion.p>
 
               <motion.div
@@ -225,7 +227,7 @@ export default function LandingPage() {
                   size="lg"
                   className="h-14 px-8 rounded-full text-base shadow-xl bg-primary hover:bg-primary/90 transition-transform duration-300 hover:scale-105"
                 >
-                  Démarrez l'Essai Gratuit 14 Jours
+                  Démarrez l&apos;Essai Gratuit 14 Jours
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Button
@@ -281,12 +283,14 @@ export default function LandingPage() {
                       </div>
                     </div>
                     <div className="ml-auto px-2 py-1 bg-secondary/10 text-secondary-foreground text-xs font-bold rounded">
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-teal-500">VALIDÉ</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-teal-500">
+                        VALIDÉ
+                      </span>
                     </div>
                   </div>
 
                   <div className="space-y-4 flex-1">
-                    <div className="p-3 bg-white/40 rounded-lg border border-white/30">
+                    <div className="p-3 bg-white/40 dark:bg-black/40 rounded-lg border border-white/30 dark:border-white/10">
                       <div className="text-xs text-muted-foreground mb-1">
                         Impact Budget
                       </div>
@@ -294,19 +298,21 @@ export default function LandingPage() {
                         - 2.500.000 FCFA
                       </div>
                     </div>
-                    <div className="p-3 bg-white/60 rounded-lg border border-secondary/30 relative overflow-hidden">
+                    <div className="p-3 bg-white/60 dark:bg-black/60 rounded-lg border border-secondary/30 relative overflow-hidden">
                       <div className="absolute left-0 top-0 w-1 h-full bg-secondary"></div>
                       <div className="text-xs text-muted-foreground mb-1">
                         ROI Estimé
                       </div>
                       <div className="text-xl font-bold font-mono">
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">+ 15% / an</span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+                          + 15% / an
+                        </span>
                       </div>
                     </div>
                     <div className="mt-auto pt-4 flex gap-2">
-                      <div className="h-8 w-8 rounded-full bg-gray-200 border-2 border-white"></div>
-                      <div className="h-8 w-8 rounded-full bg-gray-300 border-2 border-white -ml-4"></div>
-                      <div className="h-8 w-8 rounded-full bg-primary text-white text-[10px] flex items-center justify-center border-2 border-white -ml-4">
+                      <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-slate-700 border-2 border-white dark:border-slate-800"></div>
+                      <div className="h-8 w-8 rounded-full bg-gray-300 dark:bg-slate-600 border-2 border-white dark:border-slate-800 -ml-4"></div>
+                      <div className="h-8 w-8 rounded-full bg-primary text-white text-[10px] flex items-center justify-center border-2 border-white dark:border-slate-800 -ml-4">
                         +3
                       </div>
                     </div>
@@ -318,14 +324,14 @@ export default function LandingPage() {
         </section>
 
         {/* PROBLEM & SOLUTION */}
-        <section className="py-24 bg-white/50 border-y border-border/50">
+        <section className="bg-white/50 dark:bg-transparent py-24 border-y border-border/50">
           <div className="container mx-auto px-6 text-center max-w-4xl">
             <h2 className="text-3xl font-bold mb-6">Le Problème</h2>
             <p className="text-xl text-muted-foreground mb-12">
-              "Vos décisions stratégiques sont-elles alignées avec votre budget
-              ? <br className="hidden md:block" />
+              &quot;Vos décisions stratégiques sont-elles alignées avec votre
+              budget ? <br className="hidden md:block" />
               Gardez-vous une trace de chaque choix, de sa justification et de
-              son impact financier ?"
+              son impact financier ?&quot;
             </p>
 
             <motion.div
@@ -353,9 +359,9 @@ export default function LandingPage() {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-teal-500">
                     Trace
                   </span>{" "}
-                  est votre mémoire d'entreprise et votre contrôleur de gestion,
-                  réunis dans une interface simple et puissante. Fini les
-                  fichiers Excel dispersés et les emails perdus.
+                  est votre mémoire d&apos;entreprise et votre contrôleur de
+                  gestion, réunis dans une interface simple et puissante. Fini
+                  les fichiers Excel dispersés et les emails perdus.
                 </p>
               </div>
             </motion.div>
@@ -408,11 +414,11 @@ export default function LandingPage() {
               Ils nous font confiance
             </h2>
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <div className="bg-white p-8 rounded-2xl shadow-sm border border-border/50">
+              <div className="bg-white dark:bg-black dark:shadow-2xl dark:shadow-white/10 p-8 rounded-2xl shadow-sm border border-border/50">
                 <div className="flex gap-1 text-yellow-400 mb-4">★★★★★</div>
                 <p className="text-lg mb-6 text-foreground/80 italic">
-                  "Depuis DecisionTrace, nous avons une vision claire de nos
-                  investissements. C'est fini le pilotage à vue."
+                  &quot;Depuis DecisionTrace, nous avons une vision claire de
+                  nos investissements. C&apos;est fini le pilotage à vue.&quot;
                 </p>
                 <div className="flex items-center gap-3">
                   <Image
@@ -430,11 +436,11 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-              <div className="bg-white p-8 rounded-2xl shadow-sm border border-border/50">
+              <div className="bg-white dark:bg-black dark:shadow-2xl dark:shadow-white/10 p-8 rounded-2xl shadow-sm border border-border/50">
                 <div className="flex gap-1 text-yellow-400 mb-4">★★★★★</div>
                 <p className="text-lg mb-6 text-foreground/80 italic">
-                  "Indispensable pour nos prises de décisions rapides. On gagne
-                  un temps fou sur les validations."
+                  &quot;Indispensable pour nos prises de décisions rapides. On
+                  gagne un temps fou sur les validations.&quot;
                 </p>
                 <div className="flex items-center gap-3">
                   <Image
@@ -508,7 +514,7 @@ export default function LandingPage() {
                 size="lg"
                 className="w-full h-14 bg-white text-primary border-2 cursor-pointer border-transparent hover:text-secondary transition-all font-bold text-lg rounded-full"
               >
-                Je m'abonne maintenant
+                Je m&apos;abonne maintenant
               </Button>
               <div className="mt-4 text-sm text-zinc-500">
                 Paiement sécurisé
@@ -545,7 +551,7 @@ export default function LandingPage() {
         {/* CONTACT FORM SECTION */}
         <section
           id="contact"
-          className="py-24 bg-gradient-to-b from-white to-muted/20 border-t"
+          className="py-24 bg-gradient-to-b from-white to-muted/20 dark:from-slate-950 dark:to-slate-900/50 border-t"
         >
           <div className="container mx-auto px-6">
             <div className="grid md:grid-cols-2 gap-16 items-start max-w-6xl mx-auto">
@@ -585,7 +591,7 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <div className="bg-white p-8 rounded-3xl shadow-lg border border-border/20">
+              <div className="bg-white dark:bg-slate-900/50 p-8 rounded-3xl shadow-lg border border-border/20">
                 <ContactForm />
               </div>
             </div>
@@ -614,7 +620,7 @@ export default function LandingPage() {
                 </span>
               </div>
               <p className="text-zinc-400 text-sm">
-                L'outil de référence pour les PME au Cameroun.
+                L&apos;outil de référence pour les PME au Cameroun.
               </p>
             </div>
             <div>
@@ -686,7 +692,7 @@ function FeatureItem({
   return (
     <motion.div
       variants={fadeInUp}
-      className="p-6 rounded-2xl bg-white border border-border/50 shadow-sm hover:shadow-md transition-all hover:scale-105 group relative overflow-hidden"
+      className="p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-border/50 shadow-sm hover:shadow-md transition-all hover:scale-105 group relative overflow-hidden"
     >
       <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-secondary/5 to-transparent rounded-bl-3xl"></div>
       <div className="mb-4 text-foreground w-fit p-3 rounded-xl bg-gray-50 border border-gray-100 group-hover:bg-white group-hover:border-secondary/20 transition-colors z-10 relative">
@@ -703,7 +709,7 @@ function FeatureItem({
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="border border-border rounded-xl bg-white overflow-hidden">
+    <div className="border border-border rounded-xl bg-white dark:bg-slate-900/50 overflow-hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between p-4 text-left font-semibold hover:bg-muted/20 transition-colors"
