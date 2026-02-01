@@ -6,7 +6,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
 
   --color-primary: var(--primary);
@@ -35,6 +35,7 @@
   --radius-4xl: calc(var(--radius) + 16px);
 
   --animate-aurora: aurora 60s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
 
   @keyframes aurora {
     from {
@@ -45,75 +46,85 @@
       background-position: 350% 50%, 350% 50%;
     }
   }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
 }
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0.5rem;
 
-  /* Brand: Deep Corporate Blue & Vibrant Mint */
-  --background: oklch(0.99 0.01 240);
-  /* Slightly cool white */
+  /* Brand: Professional Blue, Trustworthy Green, Clean White */
+  --background: oklch(0.99 0 0);
   --foreground: oklch(0.15 0.05 260);
-  /* Deep Navy */
 
-  --card: oklch(1 0 0.01);
+  --card: oklch(1 0 0);
   --card-foreground: oklch(0.15 0.05 260);
 
-  --popover: oklch(1 0 0.01);
+  --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.15 0.05 260);
 
-  /* Primary: Electric Blue */
-  --primary: oklch(0.48 0.18 260);
-  --primary-foreground: oklch(0.98 0 0);
+  /* Primary: Deep Corporate Blue */
+  --primary: oklch(0.45 0.15 260);
+  --primary-foreground: oklch(1 0 0);
 
-  /* Secondary: Soft Mint/Green */
-  --secondary: oklch(0.96 0.04 160);
-  --secondary-foreground: oklch(0.30 0.10 160);
+  /* Secondary: VIBRANT MINT GREEN (Success/Action) */
+  /* Was too pale before. Now darker and more saturated. */
+  --secondary: oklch(0.65 0.18 150);
+  --secondary-foreground: oklch(1 0 0);
 
-  --muted: oklch(0.97 0.02 250);
-  --muted-foreground: oklch(0.50 0.05 250);
+  --muted: oklch(0.96 0.01 260);
+  --muted-foreground: oklch(0.45 0.03 260);
 
-  --accent: oklch(0.94 0.05 260);
-  --accent-foreground: oklch(0.20 0.10 260);
+  --accent: oklch(0.96 0.01 260);
+  --accent-foreground: oklch(0.20 0.05 260);
 
   --destructive: oklch(0.6 0.2 25);
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: oklch(0.92 0.02 260);
-  --input: oklch(0.92 0.02 260);
-  --ring: oklch(0.48 0.18 260);
+  --border: oklch(0.92 0.01 260);
+  --input: oklch(0.92 0.01 260);
+  --ring: oklch(0.45 0.15 260);
 }
 
 .dark {
-  /* Deep Space Navy */
-  --background: oklch(0.10 0.04 260);
-  --foreground: oklch(0.98 0.01 240);
+  --background: oklch(0.10 0.03 260);
+  --foreground: oklch(0.98 0 0);
 
-  --card: oklch(0.13 0.04 260);
-  --card-foreground: oklch(0.98 0.01 240);
+  --card: oklch(0.13 0.03 260);
+  --card-foreground: oklch(0.98 0 0);
 
-  --popover: oklch(0.13 0.04 260);
-  --popover-foreground: oklch(0.98 0.01 240);
+  --popover: oklch(0.13 0.03 260);
+  --popover-foreground: oklch(0.98 0 0);
 
-  --primary: oklch(0.60 0.18 260);
-  /* Lighter Electric Blue for Dark Mode */
-  --primary-foreground: oklch(0.10 0.04 260);
+  --primary: oklch(0.60 0.15 260);
+  --primary-foreground: oklch(0.10 0.03 260);
 
-  --secondary: oklch(0.20 0.08 160);
-  --secondary-foreground: oklch(0.90 0.05 160);
+  /* Secondary Green for Dark Mode */
+  --secondary: oklch(0.55 0.15 150);
+  --secondary-foreground: oklch(0.98 0 0);
 
-  --muted: oklch(0.18 0.04 260);
-  --muted-foreground: oklch(0.70 0.05 260);
+  --muted: oklch(0.18 0.03 260);
+  --muted-foreground: oklch(0.70 0.03 260);
 
-  --accent: oklch(0.20 0.08 260);
+  --accent: oklch(0.18 0.03 260);
   --accent-foreground: oklch(0.98 0 0);
 
   --destructive: oklch(0.6 0.2 25);
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: oklch(0.25 0.04 260);
-  --input: oklch(0.25 0.04 260);
-  --ring: oklch(0.60 0.18 260);
+  --border: oklch(0.25 0.03 260);
+  --input: oklch(0.25 0.03 260);
+  --ring: oklch(0.60 0.15 260);
 }
 
 @layer base {
@@ -122,39 +133,37 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
+    @apply bg-background text-foreground antialiased font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-sans tracking-tight;
   }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  /* Glassmorphism Utilities */
   .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 dark:bg-black/10 dark:border-white/10;
+    @apply bg-white/20 backdrop-blur-md border border-white/20 dark:bg-black/20 dark:border-white/10;
   }
 
   .glass-card {
-    @apply bg-white/40 dark:bg-white/5 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-xl;
+    @apply bg-white/60 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 shadow-sm transition-all hover:shadow-md;
   }
 
-  /* Aurora Background Utility */
-  .aurora-bg {
-    background-image:
-      radial-gradient(at 10% 10%, var(--primary) 0px, transparent 50%),
-      radial-gradient(at 90% 0%, var(--secondary) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, var(--primary) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, var(--secondary) 0px, transparent 50%);
-    background-size: 150% 150%;
-    filter: blur(80px);
-    opacity: 0.15;
-    animation: aurora 20s ease infinite alternate;
-  }
-
-  /* Noise Texture */
   .bg-noise {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600;
+  }
+
+  .text-gradient-balanced {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-secondary;
   }
 }
