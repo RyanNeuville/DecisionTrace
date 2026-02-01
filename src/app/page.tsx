@@ -22,6 +22,22 @@ import {
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
@@ -162,29 +178,52 @@ export default function LandingPage() {
         {/* HERO SECTION */}
         <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 container mx-auto px-6 text-center lg:text-left">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8 animate-in slide-in-from-bottom-5 fade-in duration-700">
-              <div className="inline-flex items-center rounded-full border border-secondary/30 bg-secondary/10 px-3 py-1 text-sm font-medium text-secondary-foreground backdrop-blur-sm mx-auto lg:mx-0">
+            <div className="space-y-8">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUp}
+                className="inline-flex items-center rounded-full border border-secondary/30 bg-secondary/10 px-3 py-1 text-sm font-medium text-secondary-foreground backdrop-blur-sm mx-auto lg:mx-0"
+              >
                 <span className="flex h-2 w-2 rounded-full bg-secondary mr-2 animate-pulse"></span>
-                Nouveau pour les PME Camerounaises
-              </div>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Nouveau pour les PME Camerounaises</span>
+              </motion.div>
 
-              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-balance text-foreground">
+              <motion.h1
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUp}
+                transition={{ delay: 0.1 }}
+                className="text-4xl md:text-6xl font-extrabold tracking-tight text-balance text-foreground"
+              >
                 Prenez des Décisions{" "}
                 <span className="text-primary">Éclairées</span>, <br />
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-teal-500 to-secondary">
                   Maîtrisez Vos Finances
                 </span>
-              </h1>
+              </motion.h1>
 
-              <p className="max-w-xl mx-auto lg:mx-0 text-lg md:text-xl text-muted-foreground leading-relaxed">
+              <motion.p
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUp}
+                transition={{ delay: 0.2 }}
+                className="max-w-xl mx-auto lg:mx-0 text-lg md:text-xl text-muted-foreground leading-relaxed"
+              >
                 DecisionTrace : L'outil essentiel qui allie stratégie et budget
                 pour les PME et startups au Cameroun.
-              </p>
+              </motion.p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUp}
+                transition={{ delay: 0.3 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2"
+              >
                 <Button
                   size="lg"
-                  className="h-14 px-8 rounded-full text-base shadow-xl bg-primary hover:bg-primary/90"
+                  className="h-14 px-8 rounded-full text-base shadow-xl bg-primary hover:bg-primary/90 transition-transform duration-300 hover:scale-105"
                 >
                   Démarrez l'Essai Gratuit 14 Jours
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -193,20 +232,31 @@ export default function LandingPage() {
                   size="lg"
                   variant="outline"
                   onClick={() => scrollToSection("features")}
-                  className="h-14 px-8 rounded-full text-base bg-white/50 hover:bg-white transition-colors"
+                  className="h-14 px-8 rounded-full text-base bg-white/50 hover:bg-white transition-all hover:scale-105"
                 >
                   Découvrir la solution
                 </Button>
-              </div>
+              </motion.div>
 
-              <div className="pt-6 flex items-center justify-center lg:justify-start gap-2 text-sm text-muted-foreground">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUp}
+                transition={{ delay: 0.4 }}
+                className="pt-6 flex items-center justify-center lg:justify-start gap-2 text-sm text-muted-foreground"
+              >
                 <ShieldCheck className="h-4 w-4 text-green-600" />
                 <span>Données hébergées et sécurisées</span>
-              </div>
+              </motion.div>
             </div>
 
             {/* Hero Visual - Abstract Symbol for Decision & Growth */}
-            <div className="relative h-[400px] lg:h-[500px] w-full flex items-center justify-center lg:justify-end perspective-1000">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative h-[400px] lg:h-[500px] w-full flex items-center justify-center lg:justify-end perspective-1000"
+            >
               <div className="relative w-full max-w-md aspect-square">
                 {/* Decorative orbital rings */}
                 <div className="absolute inset-0 border border-primary/10 rounded-full animate-[spin_10s_linear_infinite]"></div>
@@ -231,7 +281,7 @@ export default function LandingPage() {
                       </div>
                     </div>
                     <div className="ml-auto px-2 py-1 bg-secondary/10 text-secondary-foreground text-xs font-bold rounded">
-                      VALIDÉ
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-teal-500">VALIDÉ</span>
                     </div>
                   </div>
 
@@ -249,8 +299,8 @@ export default function LandingPage() {
                       <div className="text-xs text-muted-foreground mb-1">
                         ROI Estimé
                       </div>
-                      <div className="text-xl font-bold font-mono text-secondary-foreground">
-                        + 15% / an
+                      <div className="text-xl font-bold font-mono">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">+ 15% / an</span>
                       </div>
                     </div>
                     <div className="mt-auto pt-4 flex gap-2">
@@ -263,7 +313,7 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -278,7 +328,13 @@ export default function LandingPage() {
               son impact financier ?"
             </p>
 
-            <div className="bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/10 rounded-2xl p-8 md:p-12 relative overflow-hidden">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+              className="bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/10 rounded-2xl p-8 md:p-12 relative overflow-hidden"
+            >
               <div className="relative z-10">
                 <h3 className="text-2xl font-bold text-primary mb-4">
                   La Solution{" "}
@@ -302,7 +358,7 @@ export default function LandingPage() {
                   fichiers Excel dispersés et les emails perdus.
                 </p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -315,7 +371,13 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
             <FeatureItem
               icon={<GitBranch className="h-8 w-8 text-primary" />}
               title="Traçabilité Complète"
@@ -336,7 +398,7 @@ export default function LandingPage() {
               title="Sécurité & Collaboration"
               description="Travaillez en équipe en toute sécurité, où que vous soyez au Cameroun."
             />
-          </div>
+          </motion.div>
         </section>
 
         {/* TESTIMONIALS */}
@@ -397,7 +459,13 @@ export default function LandingPage() {
         {/* PRICING */}
         <section id="pricing" className="py-24 container mx-auto px-6">
           {/* Card container with deep premium background and subtle border */}
-          <div className="max-w-lg mx-auto bg-gradient-to-br from-slate-900 to-blue-950 border border-blue-800/60 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-2xl transition-transform duration-300 hover:scale-[1.01]">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-lg mx-auto bg-gradient-to-br from-slate-900 to-blue-950 border border-blue-800/60 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-2xl transition-transform duration-300 hover:scale-[1.01]"
+          >
             {/* Ambient background effects - NOT a simple linear gradient */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 rounded-full blur-[80px] pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px] pointer-events-none"></div>
@@ -438,7 +506,7 @@ export default function LandingPage() {
 
               <Button
                 size="lg"
-                className="w-full h-14 bg-white text-primary border-2 border-transparent hover:border-secondary hover:text-secondary transition-all font-bold text-lg rounded-full"
+                className="w-full h-14 bg-white text-primary border-2 cursor-pointer border-transparent hover:text-secondary transition-all font-bold text-lg rounded-full"
               >
                 Je m'abonne maintenant
               </Button>
@@ -446,7 +514,7 @@ export default function LandingPage() {
                 Paiement sécurisé
               </div>
             </div>
-          </div>
+          </motion.div>
         </section>
 
         {/* FAQ */}
@@ -509,7 +577,7 @@ export default function LandingPage() {
                     </div>
                     <div>
                       <div className="font-semibold">Commercial</div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-sm text-primary">
                         commercial@decisiontrace.cm
                       </div>
                     </div>
@@ -616,7 +684,10 @@ function FeatureItem({
   description: string;
 }) {
   return (
-    <div className="p-6 rounded-2xl bg-white border border-border/50 shadow-sm hover:shadow-md transition-all hover:scale-105 group relative overflow-hidden">
+    <motion.div
+      variants={fadeInUp}
+      className="p-6 rounded-2xl bg-white border border-border/50 shadow-sm hover:shadow-md transition-all hover:scale-105 group relative overflow-hidden"
+    >
       <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-secondary/5 to-transparent rounded-bl-3xl"></div>
       <div className="mb-4 text-foreground w-fit p-3 rounded-xl bg-gray-50 border border-gray-100 group-hover:bg-white group-hover:border-secondary/20 transition-colors z-10 relative">
         {icon}
@@ -625,7 +696,7 @@ function FeatureItem({
       <p className="text-muted-foreground text-sm leading-relaxed">
         {description}
       </p>
-    </div>
+    </motion.div>
   );
 }
 
@@ -638,18 +709,32 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
         className="w-full flex items-center justify-between p-4 text-left font-semibold hover:bg-muted/20 transition-colors"
       >
         {question}
-        {isOpen ? (
-          <X className="h-4 w-4" />
-        ) : (
-          <Menu className="h-4 w-4 rotate-90" />
-        )}
-        {/* Using Menu/X as simple +/- icons for now */}
+        <motion.div
+          animate={{ rotate: isOpen ? 90 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {isOpen ? (
+            <X className="h-4 w-4" />
+          ) : (
+            <Menu className="h-4 w-4 rotate-90" />
+          )}
+        </motion.div>
       </button>
-      {isOpen && (
-        <div className="p-4 pt-0 text-muted-foreground text-sm leading-relaxed border-t border-border/20 bg-muted/10">
-          {answer}
-        </div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <div className="p-4 pt-0 text-muted-foreground text-sm leading-relaxed border-t border-border/20 bg-muted/10">
+              {answer}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
