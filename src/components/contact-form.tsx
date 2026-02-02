@@ -24,11 +24,9 @@ const formSchema = z.object({
     .min(2, { message: "Le nom de l'entreprise est requis." }),
   email: z.string().email({ message: "Adresse email invalide." }),
   phone: z.string().min(9, { message: "Numéro de téléphone requis." }),
-  message: z
-    .string()
-    .min(10, {
-      message: "Votre message doit contenir au moins 10 caractères.",
-    }),
+  message: z.string().min(10, {
+    message: "Votre message doit contenir au moins 10 caractères.",
+  }),
 });
 
 export function ContactForm() {
@@ -64,7 +62,7 @@ export function ContactForm() {
           name="companyName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nom de l'entreprise</FormLabel>
+              <FormLabel>Nom de l&apos;entreprise</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Ex: Tech Solutions Cameroun"
