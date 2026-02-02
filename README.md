@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DecisionTrace
+
+**DecisionTrace** is an innovative web application designed for businesses to structure strategic decision-making and centralize financial management. The tool preserves the reasoning behind each choice and links these decisions to their actual financial impacts.
+
+## Key Features
+
+### Decision Management (Module 1)
+
+- **Formalization**: Defining the context and responsibilities.
+
+- **Comparative Analysis**: Adding options and evaluation criteria.
+
+- **Traceability**: Final justification and retention of the decision history.
+
+### Financial Management (Module 2)
+
+- **Flow Tracking**: Recording and categorizing inflows and outflows.
+
+- **Monitoring**: Automatic balance calculation and visualization via graphical reports.
+
+- **Innovation**: Direct link between a financial transaction and a strategic decision.
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Styling**: Tailwind CSS & Shadcn/ui
+- **Authentication**: Clerk
+- **Database**: PostgreSQL (via Prisma ORM)
+- **Icons**: Lucide React
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js (v18+ recommended)
+- npm or pnpm
+
+### Installation
+
+1.  Clone the repository:
+
+    ```bash
+    git clone https://github.com/RyanNeuville/DecisionTrace.git
+    cd decisiontrace
+    ```
+
+2.  Install dependencies:
+    ```bash
+    npm install
+    # or
+    pnpm install
+    ```
+
+### Environment Setup
+
+Create a `.env` file in the root directory (or `.env.local`) and add the following variables:
+
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/decisiontrace"
+
+# Auth (Clerk)
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+```
+
+### Database Setup
+
+Run the following commands to set up the database schema:
+
+```bash
+# Generate Prisma Client
+npx prisma generate
+
+# Push schema to the database (for development)
+npx prisma db push
+```
+
+### Running the App
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## CI/CD
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses **GitHub Actions** for continuous integration.
+The workflow is defined in `.github/workflows/ci.yml` and includes:
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Quality Check**: Runs `eslint` to ensure code quality.
+- **Build**: Verifies that the application builds successfully.
