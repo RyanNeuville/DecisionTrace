@@ -31,7 +31,7 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: "postgresql://codedrill:Codedrill@237@localhost:5432/decisiontrace?schema=public"
 
       - name: Linting
         run: npm run lint
@@ -45,6 +45,7 @@ jobs:
       NEXT_PUBLIC_CLERK_SIGN_IN_URL: ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}
       NEXT_PUBLIC_CLERK_SIGN_UP_URL: ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_URL }}
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+      DATABASE_URL: "postgresql://codedrill:Codedrill@237@localhost:5432/decisiontrace?schema=public"
       
     steps:
       - name: Checkout code
