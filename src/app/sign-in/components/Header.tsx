@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -19,13 +19,13 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
+  /* const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-  };
+  }; */
   return (
     <header
       className={cn(
@@ -56,7 +56,7 @@ export default function Header() {
 
         <div className="hidden md:flex items-center gap-3">
           <Button variant="ghost" size="sm" asChild>
-            <Link href="/">Retour a l'accueil</Link>
+            <Link href="/">Retour à l&apos;accueil</Link>
           </Button>
           <Button
             size="sm"
@@ -81,7 +81,7 @@ export default function Header() {
           <div className="absolute inset-0 top-0 h-screen bg-background flex flex-col items-center justify-center gap-8 z-40 md:hidden animate-in slide-in-from-right">
             <div className="flex flex-col gap-4 mt-8 w-64">
               <Button variant="outline" size="lg" asChild className="w-full">
-                <Link href="/">Retour a l'accueil</Link>
+                <Link href="/">Retour à l&apos;accueil</Link>
               </Button>
               <Button size="lg" asChild className="w-full">
                 <Link href="/sign-up">Essai Gratuit</Link>
