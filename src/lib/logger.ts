@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 type ActionType =
   | "DECISION_CREATED"
@@ -25,24 +25,23 @@ type EntityType =
 
 export async function logAction({
   userId,
-  actionType,
-  entityType,
+  action,
+  details,
   entityId,
   description,
 }: {
   userId: string;
-  actionType: ActionType;
-  entityType: EntityType;
+  action: ActionType;
+  details: EntityType;
   entityId?: string;
   description?: string;
 }) {
   await prisma.actionLog.create({
     data: {
       userId,
-      actionType,
-      entityType,
-      entityId,
-      description,
+      action,
+      details,
+      createdAt: new Date(),
     },
   });
 }
